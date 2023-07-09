@@ -1,5 +1,5 @@
 {
-  "name": "colored-text",
+  "name": "@ohbeomho/colored-text",
   "version": "1.0.0",
   "description": "Make text colorful!",
   "main": "lib/index.js",
