@@ -13,8 +13,7 @@
     "start": "node index.js",
     "prepare": "npm run build",
     "prepublishOnly": "npm test",
-    "version": "git add -A src",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push --tags"
   },
   "author": "ohbeomho",
   "license": "ISC",
