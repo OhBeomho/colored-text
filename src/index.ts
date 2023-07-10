@@ -1,16 +1,12 @@
 type Color = "black" | "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white" | "gray"
 
 const colors = ["black", "red", "green", "yellow", "blue", "magenta", "cyan", "white", "gray"]
-const fgStart = 30
-const bgStart = 40
 const reset = "\x1b[0m"
 
 function getColorCode(color: Color, type: "fg" | "bg") {
-  if (type === "fg") {
-    return color !== "gray" ? `\x1b[${fgStart + colors.indexOf(color)}m` : "\x1b[90m"
-  } else {
-    return color !== "gray" ? `\x1b[${bgStart + colors.indexOf(color)}m` : "\x1b[100m"
-  }
+  return color !== "gray"
+    ? `\x1b[${type === "fg" ? 30 : 40 + colors.indexOf(color)}m`
+    : `\x1b[${type === "fg" ? 90 : 100}m`
 }
 
 function checkIndex(textLength: number, start: number, end?: number) {
