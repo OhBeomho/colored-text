@@ -2,6 +2,12 @@
 
 Make your text colored!
 
+## Install
+
+```
+npm i coloring-text
+```
+
 ## Examples
 
 ### Change all text color
@@ -20,6 +26,6 @@ console.log(background("This is text with gray background", "gray"))
 const { fullRanged, foregroundRanged, backgroundRanged } = require("coloring-text")
 
 console.log(fullRanged("This is red text with yellow background", "red", "yellow", 0, 4))
-console.log(foregroundRanged("This is cyan text", "cyan", 8, 17))
-console.log(backgroundRanged("This is text with gray background", "gray", 18, 33))
+console.log(foregroundRanged("This is cyan text", "cyan", 8, 12))
+console.log(backgroundRanged("This is text with gray background", "gray", 18))
 ```
