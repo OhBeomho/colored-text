@@ -12,6 +12,10 @@ test("Background Ranged", () => {
   expect(backgroundRanged("test", "cyan", 1, 3)).toBe("t\x1b[46mes\x1b[0mt")
 })
 
+test("No end given", () => {
+  expect(foregroundRanged("test", "black", 2)).toBe("te\x1b[30mst\x1b[0m")
+})
+
 test("Start equal to end", () => {
   expect(() => foregroundRanged("test", "black", 1, 1)).toThrowError(RangeError)
 })

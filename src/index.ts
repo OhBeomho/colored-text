@@ -13,14 +13,11 @@ function getColorCode(color: Color, type: "fg" | "bg") {
   }
 }
 
-function checkIndex(textLength: number, start: number, end: number) {
+function checkIndex(textLength: number, start: number, end?: number) {
   if (
-    start === end ||
-    start > end ||
     start > textLength ||
-    end > textLength ||
     start < 0 ||
-    end < 0
+    (end && (start === end || start > end || end > textLength || end < 0))
   ) {
     throw new RangeError()
   }
@@ -58,9 +55,11 @@ export function fullRanged(
   foreground: Color,
   background: Color,
   start: number,
-  end: number
+  end?: number
 ) {
   checkIndex(text.length, start, end)
+
+  end = end ?? text.length
 
   const textColorCode = getColorCode(foreground, "fg")
   const backgroundColorCode = getColorCode(background, "bg")
@@ -76,8 +75,10 @@ export function fullRanged(
 /**
  * Changes the foreground color of text within a range
  */
-export function foregroundRanged(text: string, color: Color, start: number, end: number) {
+export function foregroundRanged(text: string, color: Color, start: number, end?: number) {
   checkIndex(text.length, start, end)
+
+  end = end ?? text.length
 
   const colorCode = getColorCode(color, "fg")
 
@@ -92,8 +93,10 @@ export function foregroundRanged(text: string, color: Color, start: number, end:
 /**
  * Changes the background color of text within a range
  */
-export function backgroundRanged(text: string, color: Color, start: number, end: number) {
+export function backgroundRanged(text: string, color: Color, start: number, end?: number) {
   checkIndex(text.length, start, end)
+
+  end = end ?? text.length
 
   const colorCode = getColorCode(color, "bg")
 
@@ -104,5 +107,3 @@ export function backgroundRanged(text: string, color: Color, start: number, end:
 
   return text
 }
-
-export default full
