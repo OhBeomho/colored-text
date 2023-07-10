@@ -5,7 +5,7 @@ const reset = "\x1b[0m"
 
 function getColorCode(color: Color, type: "fg" | "bg") {
   return color !== "gray"
-    ? `\x1b[${type === "fg" ? 30 : 40 + colors.indexOf(color)}m`
+    ? `\x1b[${(type === "fg" ? 30 : 40) + colors.indexOf(color)}m`
     : `\x1b[${type === "fg" ? 90 : 100}m`
 }
 
