@@ -1,105 +1,56 @@
 type Color = "black" | "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white" | "gray"
+type Style = "bright" | "dim" | "underscore" | "blink" | "reverse" | "hidden"
 
-const colors = ["black", "red", "green", "yellow", "blue", "magenta", "cyan", "white", "gray"]
+const colorList: Color[] = [
+  "black",
+  "red",
+  "green",
+  "yellow",
+  "blue",
+  "magenta",
+  "cyan",
+  "white",
+  "gray"
+]
+const styleList: Style[] = ["bright", "dim", "underscore", "blink", "reverse", "hidden"]
+const styleCodes = ["\x1b[1m", "\x1b[2m", "\x1b[4m", "\x1b[5m", "\x1b[7m", "\x1b[8m"]
 const reset = "\x1b[0m"
 
 function getColorCode(color: Color, type: "fg" | "bg") {
   return color !== "gray"
-    ? `\x1b[${(type === "fg" ? 30 : 40) + colors.indexOf(color)}m`
+    ? `\x1b[${(type === "fg" ? 30 : 40) + colorList.indexOf(color)}m`
     : `\x1b[${type === "fg" ? 90 : 100}m`
 }
 
-function checkIndex(textLength: number, start: number, end?: number) {
+function getStyleCode(style: Style) {
+  return styleCodes[styleList.indexOf(style)]
+}
+
+function checkIndex(textLength: number, start?: number, end?: number) {
   if (
-    start > textLength ||
-    start < 0 ||
-    (end && (start === end || start > end || end > textLength || end < 0))
+    (start && (start > textLength || start < 0)) ||
+    (end && (end > textLength || end < 0)) ||
+    (start && end && (start === end || start > end))
   ) {
     throw new RangeError()
   }
 }
 
 /**
- * Changes the foreground and background color of text
+ * Changes the color of text
  */
-export function full(text: string, foreground: Color, background: Color) {
-  const textColorCode = getColorCode(foreground, "fg")
-  const backgroundColorCode = getColorCode(background, "bg")
-
-  return textColorCode + backgroundColorCode + text + reset
+export function color(text: string, foreground: Color, background?: Color) {
+  return (
+    getColorCode(foreground, "fg") +
+    (background ? getColorCode(background, "bg") : "") +
+    text +
+    reset
+  )
 }
 
 /**
- * Changes the foreground color of text
+ * Changes the style of text
  */
-export function foreground(text: string, color: Color) {
-  return getColorCode(color, "fg") + text + reset
-}
-
-/**
- * Changes the background color of text
- */
-export function background(text: string, color: Color) {
-  return getColorCode(color, "bg") + text + reset
-}
-
-/**
- * Changes the foreground and background of text within a range
- */
-export function fullRanged(
-  text: string,
-  foreground: Color,
-  background: Color,
-  start: number,
-  end?: number
-) {
-  checkIndex(text.length, start, end)
-
-  end = end ?? text.length
-
-  const textColorCode = getColorCode(foreground, "fg")
-  const backgroundColorCode = getColorCode(background, "bg")
-
-  text = text.substring(0, start) + textColorCode + backgroundColorCode + text.substring(start)
-
-  const offset = textColorCode.length + backgroundColorCode.length
-  text = text.substring(0, end + offset) + reset + text.substring(end + offset)
-
-  return text
-}
-
-/**
- * Changes the foreground color of text within a range
- */
-export function foregroundRanged(text: string, color: Color, start: number, end?: number) {
-  checkIndex(text.length, start, end)
-
-  end = end ?? text.length
-
-  const colorCode = getColorCode(color, "fg")
-
-  text = text.substring(0, start) + colorCode + text.substring(start)
-
-  const offset = colorCode.length
-  text = text.substring(0, end + offset) + reset + text.substring(end + offset)
-
-  return text
-}
-
-/**
- * Changes the background color of text within a range
- */
-export function backgroundRanged(text: string, color: Color, start: number, end?: number) {
-  checkIndex(text.length, start, end)
-
-  end = end ?? text.length
-
-  const colorCode = getColorCode(color, "bg")
-
-  text = text.substring(0, start) + colorCode + text.substring(start)
-
-  const offset = colorCode.length
-  text = text.substring(0, end + offset) + reset + text.substring(end + offset)
-
-  return text
+export function style(text: string, ...styles: Style[]) {
+  return styles.map((style) => getStyleCode(style)).join("") + text + reset
 }
