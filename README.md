@@ -10,22 +10,20 @@ npm i coloring-text
 
 ## Examples
 
-### Change all text color
+### Change the color of text
 
 ```js
-const { full, foreground, background } = require("coloring-text")
+const { color } = require("coloring-text")
 
-console.log(full("This is red text with yellow background", "red", "yellow"))
-console.log(foreground("This is cyan text", "cyan"))
-console.log(background("This is text with gray background", "gray"))
+console.log(color("red text", "red"))
+console.log(`This is ${color("black text with yellow background", "black", "yellow")}`)
 ```
 
-### Change text color in range
+### Change the style of text
 
 ```js
-const { fullRanged, foregroundRanged, backgroundRanged } = require("coloring-text")
+const { style } = require("coloring-text")
 
-console.log(fullRanged("This is red text with yellow background", "red", "yellow", 0, 4))
-console.log(foregroundRanged("This is cyan text", "cyan", 8, 12))
-console.log(backgroundRanged("This is text with gray background", "gray", 18))
+console.log(style("blinking text", "blink"))
+console.log(style("bright and underscored text", "bright", "underscore"))
 ```
